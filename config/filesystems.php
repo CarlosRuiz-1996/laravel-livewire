@@ -43,7 +43,7 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-        'images' => [
+        'products' => [
             'driver' => 'local',
             'root' => storage_path('app/products'),
             'url' => env('APP_URL').'/storage',

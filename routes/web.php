@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use App\Livewire\GestionProduct;
@@ -29,7 +30,7 @@ Route::middleware([
 });
 
 Route::get('/productos',GestionProduct::class)->name('productos');
-
+Route::get('/image/file/{filename}', [ImageController::class, 'getImage'])->name('image.file');
 
 Livewire::setScriptRoute(function ($handle) {
     return Route::get('/livewire-curso/livewire6-carrito/public/livewire/livewire.js', $handle);

@@ -17,8 +17,9 @@ class GestionProduct extends Component
     public ProductForm $form;
     public $productId;
     public $open = false;
+    public $sort="";
+    public $order="desc";
 
-   
     public function openModal()
     {
         $this->resetValidation();

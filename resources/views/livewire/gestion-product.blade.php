@@ -15,67 +15,93 @@
 
                 <x-button class="ml-4" wire:click="openModal">Nuevo</x-button>
             </div>
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Nombre
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Descripción
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Precio
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Stock
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            marca
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            provedor
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            acciones
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($products as $product)
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $product->name }}
+            @if (count($products))
+
+
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">ID</th>
+                            <th scope="col" class="px-6 py-3">Imagenes</th>
+
+                            <th scope="col" class="px-6 py-3">
+                                Nombre
                             </th>
-                            <td class="px-6 py-4">
-                                {{ $product->description }}
-
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $product->price }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $product->stock }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $product->brand->name }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $product->provider->name }}
-                            </td>
-                            <td>
-                                <button class="btn btn-green" wire:click='edit({{$product}})'>Actializar</button>
-                                <button class="btn btn-red" wire:click='delete({{$product}})'>Eliminar</button>
-                            </td>
+                            <th scope="col" class="px-6 py-3">
+                                Descripción
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Precio
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Stock
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                marca
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                provedor
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                acciones
+                            </th>
                         </tr>
-                    @endforeach
+                    </thead>
 
-                </tbody>
-            </table>
-            <div class="px-6 py-3 text-gray-500">
-                {{ $products->links() }}
-            </div>
+                    <tbody>
+                        @foreach ($products as $product)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                wire:key='tr{{ $product->id }}'>
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ $product->id }}
+                                </th>
+                                <th scope="row"
+                                    class="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    <livewire:image-product-admin wire:key='img{{ $product->id }}' :images="$product->images" />
+                                </th>
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{ $product->name }}
+                                </th>
+                                <td class="px-6 py-4">
+                                    {{ $product->description }}
+
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $product->price }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $product->stock }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $product->brand->name }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ $product->provider->name }}
+                                </td>
+                                <td class="flex mt-8">
+                                    <button class="btn btn-green mr-3 p-2"
+                                        wire:click='edit({{ $product }})'>
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-red p-2"
+                                        wire:click='delete({{ $product }})'>
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+                <div class="px-6 py-3 text-gray-500">
+                    {{ $products->links() }}
+                </div>
+            @else
+                <h1 class="px-6 py-3 text-gray-500 ">No hay datos disponibles</h1>
+            @endif
         </div>
 
     </div>
@@ -83,9 +109,7 @@
     @if ($open)
         <x-dialog-modal wire:model="open">
             @slot('title')
-            <h1>  {{$productId?'EDITAR PRODUCTO':'AGREGAR PRODUCTO'}}</h1>
-
-               
+                <h1> {{ $productId ? 'EDITAR PRODUCTO' : 'AGREGAR PRODUCTO' }}</h1>
             @endslot
             @slot('content')
                 <div class="py-3">
@@ -95,8 +119,9 @@
                 </div>
                 <div class="py-3">
                     <x-label>Descripción</x-label>
-                    <x-input type="text" class="w-full" placehorder="descripcion del producto" wire:model='form.description' />
-                        <x-input-error for="form.description" />
+                    <x-input type="text" class="w-full" placehorder="descripcion del producto"
+                        wire:model='form.description' />
+                    <x-input-error for="form.description" />
 
                 </div>
                 <div class="py-3">
@@ -135,7 +160,7 @@
                 </div>
             @endslot
             @slot('footer')
-                <x-danger-button wire:click="{{$productId?'update':'save'}}">ACEPTAR</x-danger-button>
+                <x-danger-button wire:click="{{ $productId ? 'update' : 'save' }}">ACEPTAR</x-danger-button>
 
                 <x-button class="ml-3" wire:click="closeModal">CANCELAR</x-button>
             @endslot
