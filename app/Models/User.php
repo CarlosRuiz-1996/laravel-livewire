@@ -58,4 +58,11 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+
+      // relacion One to Many
+      public function orders(){
+        // llamo a otro modelo
+        return $this->hasMany('App\Models\Order');
+    }
 }
