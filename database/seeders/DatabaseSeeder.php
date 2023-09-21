@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
 
         Storage::deleteDirectory('products');
 
-        \App\Models\Brand::factory(10)->create();
-        \App\Models\Provider::factory(10)->create();
-        \App\Models\Product::factory(10)->create();
-        \App\Models\Image::factory(10)->create();
+        \App\Models\Brand::factory(20)->create();
+        \App\Models\Provider::factory(40)->create();
+        \App\Models\Product::factory(100)->create();
+        \App\Models\Image::factory(150)->create();
 
 
         \App\Models\User::factory()->create([

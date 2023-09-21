@@ -10,23 +10,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Product extends Model
 {
     use HasFactory;
-    protected $filable  =[
+    protected $fillable  =[
         'name', 'description', 'price', 'stock', 'brand_id', 'provider_id'
     ];
-    public function brand(): HasMany
+    public function brand(): BelongsTo
     {
-        return $this->hasMany(Brand::class);
+        return $this->belongsTo(Brand::class);
     }
 
-    public function provider(): HasMany
+    public function provider(): BelongsTo
     {
-        return $this->hasMany(Provider::class);
+        return $this->belongsTo(Provider::class);
     }
 
-    public function details(): BelongsTo
-    {
-        return $this->belongsTo(Detail::class);
-    }
+    // public function details(): BelongsTo
+    // {
+    //     return $this->belongsTo(Detail::class);
+    // }
 
 
    

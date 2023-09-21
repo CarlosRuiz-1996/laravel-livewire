@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Livewire\Livewire;
+use App\Livewire\GestionProduct;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,3 +27,16 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('/productos',GestionProduct::class)->name('productos');
+
+
+Livewire::setScriptRoute(function ($handle) {
+    return Route::get('/livewire-curso/livewire6-carrito/public/livewire/livewire.js', $handle);
+});
+
+Livewire::setUpdateRoute(function ($handle) {
+    return Route::post('/livewire-curso/livewire6-carrito/public/livewire/update', $handle);
+});
+
+//
