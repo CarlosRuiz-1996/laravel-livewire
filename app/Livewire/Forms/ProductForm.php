@@ -39,7 +39,7 @@ class ProductForm extends Form
         $this->provider_id = $product->provider_id;
     }
 
-    public function read()
+    public function read($sort, $orderBy, $list)
     {
         return Product::where(function ($query) {
             $query->where('name', 'like', '%' . $this->search . '%')
@@ -53,8 +53,8 @@ class ProductForm extends Form
             ->orWhereHas('provider', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
-            ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->orderBy($sort, $orderBy)
+            ->paginate($list);
     }
 
 

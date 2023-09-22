@@ -1,9 +1,13 @@
-<div>
+{{-- se inicializa el div para que la tabla pueda cargar una ves que se cargo la pagina --}}
+<div wire:init='loadProducts'>
+
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Productos') }}
         </h2>
+
+        {{ $readyToLoad }}
     </x-slot>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
@@ -11,7 +15,18 @@
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
             <div class=" py-6 px-4 bg-gray-100 flex">
-                <x-input type="text" class="w-full" wire:model.live='form.search' />
+
+                <div class="flex items-center">
+                    <span>Mostrar</span>
+                    <select class="form-control" wire:model.live='list'>
+                        @foreach ($entrada as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                        @endforeach
+                    </select>
+                    <span>Entradas</span>
+                </div>
+
+                <x-input type="text" class="w-full ml-4" wire:model.live='form.search' />
 
                 <x-button class="ml-4" wire:click="openModal">Nuevo</x-button>
             </div>
@@ -21,28 +36,37 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">ID</th>
+                            <th scope="col" class="w-24 px-4 py-2 cursor-pointer" wire:click="order('id')">
+                                ID
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
+                            </th>
                             <th scope="col" class="px-6 py-3">Imagenes</th>
 
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-6 py-3 cursor-pointer" wire:click="order('name')">
                                 Nombre
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class=" w-48 px-6 py-3 cursor-pointer" wire:click="order('description')">
                                 Descripción
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="w-28 px-4 py-2 cursor-pointer" wire:click="order('price')">
                                 Precio
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="w-28 px-4 py-2 cursor-pointer" wire:click="order('stock')">
                                 Stock
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="w-40 px-6 py-3 cursor-pointer" wire:click="order('brand_id')">
                                 marca
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="w-40 px-6 py-3 cursor-pointer" wire:click="order('provider_id')">
                                 provedor
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="px-3 py-3">
                                 acciones
                             </th>
                         </tr>
@@ -81,12 +105,10 @@
                                     {{ $product->provider->name }}
                                 </td>
                                 <td class="flex mt-8">
-                                    <button class="btn btn-green mr-3 p-2"
-                                        wire:click='edit({{ $product }})'>
+                                    <button class="btn btn-green mr-3 p-2" wire:click='edit({{ $product }})'>
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-red p-2"
-                                        wire:click='delete({{ $product }})'>
+                                    <button class="btn btn-red p-2" wire:click='delete({{ $product }})'>
                                         <i class="fa-solid fa-trash"></i>
 
                                     </button>
@@ -96,11 +118,22 @@
 
                     </tbody>
                 </table>
+                
+
+                @if ($products->hasPages())
                 <div class="px-6 py-3 text-gray-500">
                     {{ $products->links() }}
                 </div>
+                @endif
             @else
-                <h1 class="px-6 py-3 text-gray-500 ">No hay datos disponibles</h1>
+                @if ($readyToLoad)
+                    <h1 class="px-6 py-3 text-gray-500 ">No hay datos disponibles</h1>
+                @else
+                    <!-- Muestra un spinner mientras los datos se cargan -->
+                    <div class="flex justify-center items-center h-40">
+                        <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
+                    </div>
+                @endif
             @endif
         </div>
 
