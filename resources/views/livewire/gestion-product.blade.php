@@ -66,7 +66,11 @@
                                 provedor
                                 <i class="fas fa-sort float-right hover:float-left mt-1"></i>
                             </th>
-                            <th scope="col" class="px-3 py-3">
+                            <th scope="col" class="w-40 px-6 py-3 cursor-pointer" wire:click="order('provider_id')">
+                                categoria
+                                <i class="fas fa-sort float-right hover:float-left mt-1"></i>
+                            </th>
+                            <th scope="col" class="w-40 px-3 py-3">
                                 acciones
                             </th>
                         </tr>
@@ -104,8 +108,11 @@
                                 <td class="px-6 py-4">
                                     {{ $product->provider->name }}
                                 </td>
+                                <td class="px-6 py-4">
+                                    {{ $product->category->name }}
+                                </td>
                                 <td class="flex mt-8">
-                                    <button class="btn btn-green mr-3 p-2" wire:click='edit({{ $product }})'>
+                                    <button class="btn btn-green mr-2 p-2" wire:click='edit({{ $product }})'>
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-red p-2" wire:click='delete({{ $product }})'>
@@ -182,13 +189,24 @@
                 </div>
                 <div class="py-3">
                     <x-label>Marca</x-label>
-                    <select name="" id="" class="form-control w-full" wire:model.live='form.brand_id'>
+                    <select name="" id="" class="form-control w-full" wire:model='form.brand_id'>
                         <option value="" selected disabled>Seleccione una marca</option>
                         @foreach ($brands as $brand)
                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                         @endforeach
                     </select>
                     <x-input-error for="form.brand_id" />
+
+                </div>
+                <div class="py-3">
+                    <x-label>Categoria</x-label>
+                    <select name="" id="" class="form-control w-full" wire:model='form.category_id'>
+                        <option value="" selected disabled>Seleccione una categoria</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error for="form.category_id" />
 
                 </div>
             @endslot

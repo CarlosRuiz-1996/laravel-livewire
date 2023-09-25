@@ -31,7 +31,7 @@ class ImageFactory extends Factory
         $imageName = Str::random(10) . '.jpg';
 
         // Guarda la imagen en el sistema de archivos 'images'
-        Storage::disk('images')->put($imageName, $imageData);
+        Storage::disk('products')->put($imageName, $imageData);
 
 
         return [

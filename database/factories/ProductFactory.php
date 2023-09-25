@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Provider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class ProductFactory extends Factory
     {
         $brand = Brand::inRandomOrder()->first(); // Obtiene una marca aleatoria
         $provider = Provider::inRandomOrder()->first(); // Obtiene una marca aleatoria
+        $category = Category::inRandomOrder()->first(); // Obtiene una marca aleatoria
 
         return [
             'name'=> fake()->company(),
@@ -27,7 +29,9 @@ class ProductFactory extends Factory
             'price'=> fake()->randomFloat(2, 10, 100),
             'stock'=> fake()->randomNumber(5, false),
             'brand_id'=>$brand->id,
-            'provider_id'=>$provider->id
+            'provider_id'=>$provider->id,
+            'category_id'=>$category->id
+
         ];
     }
 }

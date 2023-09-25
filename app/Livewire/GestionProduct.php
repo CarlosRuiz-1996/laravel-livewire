@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Livewire\Forms\ProductForm;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Provider;
 use Livewire\Component;
@@ -49,22 +50,27 @@ class GestionProduct extends Component
         if ($this->readyToLoad) {
             $brands = Brand::all();
             $provider = Provider::all();
+            $categories = Category::all();
+
             $products = $this->form->read($this->sort, $this->orderBy, $this->list);
         } else {
             $brands = [];
             $provider = [];
             $products = [];
+            $categories = [];
         }
 
         return view('livewire.gestion-product', [
             'products' => $products,
             'providers' => $provider,
-            'brands' => $brands
+            'brands' => $brands,
+            'categories'=> $categories
         ]);
     }
 
     public function save()
     {
+        
         $this->form->store();
         $this->dispatch('show-productos');
         $this->closeModal();

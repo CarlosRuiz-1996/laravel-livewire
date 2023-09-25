@@ -17,6 +17,7 @@ class ProductForm extends Form
     public $stock;
     public $brand_id;
     public $provider_id;
+    public $category_id;
 
     protected $rules = [
         'name' => 'required',
@@ -25,7 +26,7 @@ class ProductForm extends Form
         'stock' => 'required',
         'brand_id' => 'required',
         'provider_id' => 'required',
-
+        'category_id' => 'required'
     ];
 
     public function setProduct(Product $product)
@@ -37,6 +38,7 @@ class ProductForm extends Form
         $this->stock = $product->stock;
         $this->brand_id = $product->brand_id;
         $this->provider_id = $product->provider_id;
+        $this->category_id = $product->category_id;
     }
 
     public function read($sort, $orderBy, $list)
@@ -53,6 +55,9 @@ class ProductForm extends Form
             ->orWhereHas('provider', function ($query) {
                 $query->where('name', 'like', '%' . $this->search . '%');
             })
+            ->orWhereHas('category', function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            })
             ->orderBy($sort, $orderBy)
             ->paginate($list);
     }
@@ -62,7 +67,7 @@ class ProductForm extends Form
     {
 
         $this->validate();
-        Product::create($this->only(['name', 'description', 'price', 'stock', 'brand_id', 'provider_id']));
+        Product::create($this->only(['name', 'description', 'price', 'stock', 'brand_id', 'provider_id', 'category_id']));
         $this->reset();
     }
 
@@ -72,7 +77,6 @@ class ProductForm extends Form
         $this->validate();
         $this->product->update($this->all());
         $this->reset();
-
     }
 
 
@@ -80,6 +84,5 @@ class ProductForm extends Form
     {
         $this->product->delete();
         $this->reset();
-
     }
 }

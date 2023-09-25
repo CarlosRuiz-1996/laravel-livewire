@@ -11,6 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -20,9 +22,12 @@ return new class extends Migration
             $table->integer('status')->default(1);
             $table->foreignId('brand_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('provider_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
-        
+        Schema::enableForeignKeyConstraints();
+
     }
 
     /**
