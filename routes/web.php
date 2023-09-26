@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
+use App\Livewire\BrandCtg;
 use App\Livewire\Cart;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use App\Livewire\GestionProduct;
+use App\Livewire\ProviderCtg;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,6 +37,11 @@ Route::middleware([
 Route::get('/productos',GestionProduct::class)->name('productos');
 Route::get('/image/file/{filename}', [ImageController::class, 'getImage'])->name('image.file');
 
+//catalogos
+Route::get('/marcas',BrandCtg::class)->name('brands');;
+Route::get('/provedores',ProviderCtg::class)->name('providers');;
+
+
 Route::get('/carrito',Cart::class)->name('carrito');
 //categorias
 Route::get('category', [CategoryController::class,'index'])->name('category');
@@ -42,6 +50,9 @@ Route::post('category/save', [CategoryController::class,'save'])->name('category
 Route::get('category/edit/{category?}', [CategoryController::class, 'edit'])->name('category.edit');
 Route::put('category/update/', [CategoryController::class, 'update'])->name('category.update');
 Route::get('category/detele/{category?}', [CategoryController::class, 'delete'])->name('category.delete');
+
+
+
 
 Livewire::setScriptRoute(function ($handle) {
     return Route::get('/livewire-curso/livewire6-carrito/public/livewire/livewire.js', $handle);

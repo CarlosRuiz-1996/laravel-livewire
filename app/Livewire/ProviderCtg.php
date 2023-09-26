@@ -2,21 +2,22 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Forms\ProductForm;
-use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Provider;
 use Livewire\Component;
+use App\Livewire\Forms\ProviderForm;
+
+use App\Models\Provider;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 
-class GestionProduct extends Component
+class ProviderCtg extends Component
 {
+
+
+
     use WithPagination;
 
-    public ProductForm $form;
-    public $productId;
+    public ProviderForm $form;
+    public $providerId;
     public $open = false;
     public $sort = "id";
     public $orderBy = "desc";
@@ -32,11 +33,6 @@ class GestionProduct extends Component
         'orderBy' => ['except' => 'desc'],
         'form.search' => ['except' => ''],
     ];
-    public function create()
-    {
-        $this->reset(['form.name', 'form.description', 'form.price', 'form.stock', 'form.brand_id', 'form.provider_id', 'form.category_id']);
-        $this->openModal();
-    }
 
     public function openModal()
     {
@@ -47,49 +43,38 @@ class GestionProduct extends Component
     {
         $this->open = false;
     }
-   
 
-    #[On('show-productos')]
+    #[On('show-provedores')]
     public function render()
     {
 
         if ($this->readyToLoad) {
-            $brands = Brand::all();
-            $provider = Provider::all();
-            $categories = Category::all();
 
-            $products = $this->form->read($this->sort, $this->orderBy, $this->list);
+
+            $providers = $this->form->read($this->sort, $this->orderBy, $this->list);
         } else {
-            $brands = [];
-            $provider = [];
-            $products = [];
-            $categories = [];
+            $providers = [];
         }
 
-        return view('livewire.gestion-product', [
-            'products' => $products,
-            'providers' => $provider,
-            'brands' => $brands,
-            'categories' => $categories
+        return view('livewire.provider-ctg', [
+
+            'providers' => $providers,
         ]);
     }
-
-  
 
     public function save()
     {
 
         $this->form->store();
-        $this->dispatch('show-productos');
-        $this->dispatch('alert', "El producto se creo satisfactoriamente."); 
-
+        $this->dispatch('show-provedores');
+        $this->dispatch('alert-provider', 'Provedor creado con exito.');
         $this->closeModal();
     }
 
-    public function edit(Product $product)
+    public function edit(Provider $provider)
     {
-        $this->form->setProduct($product);
-        $this->productId = $product->id;
+        $this->form->setProvedor($provider);
+        $this->providerId = $provider->id;
         $this->openModal();
     }
 
@@ -97,20 +82,18 @@ class GestionProduct extends Component
     public function update()
     {
         $this->form->update();
-        $this->dispatch('show-productos');
-        $this->reset('productId');
-        $this->dispatch('alert', "El producto se actualizo satisfactoriamente."); 
-
+        $this->dispatch('show-provedores');
+        $this->reset('providerId');
         $this->closeModal();
+        $this->dispatch('alert-provider', 'Provedor actualizado con exito.');
     }
 
-    #[On('delete-prod')]
-    public function delete(Product $product)
+    #[On('delete-provider')]
+    public function delete(Provider $provider)
     {
-        $this->form->setProduct($product);
+        $this->form->setProvedor($provider);
         $this->form->delete();
-        $this->dispatch('show-productos');
-
+        $this->dispatch('show-provedores');
     }
 
 
@@ -137,7 +120,7 @@ class GestionProduct extends Component
     }
 
     //renderisa la tabla una ves que carga la pagina
-    public function loadProducts()
+    public function loadProviders()
     {
         $this->readyToLoad = true;
     }

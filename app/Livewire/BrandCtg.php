@@ -2,21 +2,19 @@
 
 namespace App\Livewire;
 
-use App\Livewire\Forms\ProductForm;
+use App\Livewire\Forms\BrandForm;
 use App\Models\Brand;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Provider;
+
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 
-class GestionProduct extends Component
+class BrandCtg extends Component
 {
     use WithPagination;
 
-    public ProductForm $form;
-    public $productId;
+    public BrandForm $form;
+    public $brandId;
     public $open = false;
     public $sort = "id";
     public $orderBy = "desc";
@@ -32,11 +30,6 @@ class GestionProduct extends Component
         'orderBy' => ['except' => 'desc'],
         'form.search' => ['except' => ''],
     ];
-    public function create()
-    {
-        $this->reset(['form.name', 'form.description', 'form.price', 'form.stock', 'form.brand_id', 'form.provider_id', 'form.category_id']);
-        $this->openModal();
-    }
 
     public function openModal()
     {
@@ -47,49 +40,40 @@ class GestionProduct extends Component
     {
         $this->open = false;
     }
-   
 
-    #[On('show-productos')]
+    #[On('show-marcas')]
     public function render()
     {
 
         if ($this->readyToLoad) {
-            $brands = Brand::all();
-            $provider = Provider::all();
-            $categories = Category::all();
+          
 
-            $products = $this->form->read($this->sort, $this->orderBy, $this->list);
+            $brands = $this->form->read($this->sort, $this->orderBy, $this->list);
         } else {
             $brands = [];
-            $provider = [];
-            $products = [];
-            $categories = [];
+         
         }
 
-        return view('livewire.gestion-product', [
-            'products' => $products,
-            'providers' => $provider,
+        return view('livewire.brand-ctg', [
+          
             'brands' => $brands,
-            'categories' => $categories
         ]);
     }
 
-  
-
     public function save()
     {
-
+        
         $this->form->store();
-        $this->dispatch('show-productos');
-        $this->dispatch('alert', "El producto se creo satisfactoriamente."); 
+        $this->dispatch('show-marcas');
+        $this->dispatch('alert-marcas', 'Marca creada con exito!');
 
         $this->closeModal();
     }
 
-    public function edit(Product $product)
+    public function edit(Brand $brand)
     {
-        $this->form->setProduct($product);
-        $this->productId = $product->id;
+        $this->form->setBrand($brand);
+        $this->brandId = $brand->id;
         $this->openModal();
     }
 
@@ -97,20 +81,19 @@ class GestionProduct extends Component
     public function update()
     {
         $this->form->update();
-        $this->dispatch('show-productos');
-        $this->reset('productId');
-        $this->dispatch('alert', "El producto se actualizo satisfactoriamente."); 
+        $this->dispatch('show-marcas');
+        $this->reset('brandId');
+        $this->dispatch('alert-marcas', 'Marca actualizada con exito!');
 
         $this->closeModal();
     }
 
-    #[On('delete-prod')]
-    public function delete(Product $product)
+#[On('delete-brand')]
+    public function delete(Brand $brand)
     {
-        $this->form->setProduct($product);
+        $this->form->setBrand($brand);
         $this->form->delete();
-        $this->dispatch('show-productos');
-
+        $this->dispatch('show-marcas');
     }
 
 
@@ -137,8 +120,9 @@ class GestionProduct extends Component
     }
 
     //renderisa la tabla una ves que carga la pagina
-    public function loadProducts()
+    public function loadBrands()
     {
         $this->readyToLoad = true;
     }
+    
 }

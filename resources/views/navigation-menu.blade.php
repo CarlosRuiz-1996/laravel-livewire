@@ -21,6 +21,12 @@
                     <x-nav-link href="{{ route('category') }}" :active="request()->routeIs('category')">
                         {{ __('Categorias') }}
                     </x-nav-link>
+                    <x-nav-link href="{{ route('brands') }}" :active="request()->routeIs('brands')">
+                        {{ __('Marcas') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('providers') }}" :active="request()->routeIs('providers')">
+                        {{ __('Provedores') }}
+                    </x-nav-link>
                 </div>
             </div>
 

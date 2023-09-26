@@ -76,7 +76,7 @@ class ProductForm extends Form
     {
         $this->validate();
         $this->product->update($this->all());
-        $this->reset();
+        $this->reset('name', 'description', 'price', 'stock', 'brand_id', 'provider_id', 'category_id');
     }
 
 
