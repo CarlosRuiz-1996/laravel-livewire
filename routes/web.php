@@ -42,7 +42,9 @@ Route::get('/marcas',BrandCtg::class)->name('brands');;
 Route::get('/provedores',ProviderCtg::class)->name('providers');;
 
 
-Route::get('/carrito',Cart::class)->name('carrito');
+
+
+
 //categorias
 Route::get('category', [CategoryController::class,'index'])->name('category');
 Route::get('category/create', [CategoryController::class,'create'])->name('category.create');

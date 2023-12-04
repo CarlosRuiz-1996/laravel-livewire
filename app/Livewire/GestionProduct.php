@@ -34,7 +34,7 @@ class GestionProduct extends Component
     ];
     public function create()
     {
-        $this->reset(['form.name', 'form.description', 'form.price', 'form.stock', 'form.brand_id', 'form.provider_id', 'form.category_id']);
+        $this->reset(['form.name', 'form.description', 'form.price', 'form.stock', 'form.brand_id', 'form.provider_id', 'form.category_id', 'productId']);
         $this->openModal();
     }
 

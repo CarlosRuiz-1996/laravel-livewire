@@ -5,9 +5,20 @@
  */
 
 import axios from 'axios';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+
+
+window.$ = window.jQuery = require('jquery');
+
+require('slick-carousel');
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
